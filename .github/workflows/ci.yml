@@ -5,24 +5,38 @@ on:
   pull_request:
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11"]
 
     steps:
       - name: checkout code
         uses: actions/checkout@v4
 
-      - name: Set up python
+      - name: set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
+        
+      - name: Install Requirement
+        run: pip install flake8
+
+      - name: Run flake8 (code quality)
+        run: fkale8
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: checkout code
+        uses: action/checkout@v4
+
+      - name: set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run Test
-        run: pytest 
+      - name: run tests
+        run: pytest

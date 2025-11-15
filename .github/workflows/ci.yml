@@ -21,7 +21,7 @@ jobs:
         run: pip install flake8
 
       - name: Run flake8 (code quality)
-        run: fkale8
+        run: flake8
   test:
     needs: lint
     runs-on: ubuntu-latest
